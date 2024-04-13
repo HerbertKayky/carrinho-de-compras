@@ -8,7 +8,7 @@ const Home = () => {
           Produtos em alta
         </h1>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-5">
           <section className="w-full">
             <img
               className="2-full rounded-lg max-h-70 mb-2"
