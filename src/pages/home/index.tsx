@@ -3,6 +3,7 @@ import { BsCartPlus } from "react-icons/bs";
 import { api } from "../../services/api";
 import { CartContext } from "../../context/CartContext";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 export interface ProductProps {
   id: number;
@@ -27,7 +28,7 @@ const Home = () => {
 
   function handleAddCartItem(product: ProductProps) {
     addItemCart(product);
-    toast.success("Produto adicionado ao carrinho", {
+    toast.success("Produto ao carrinho", {
       style: {
         borderRadius: 10,
         backgroundColor: "#121212",
@@ -46,6 +47,7 @@ const Home = () => {
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {products.map((product) => (
             <section key={product.id} className="w-full">
+              <Link to={`/product/${product.id}`}>
               <img
                 className="2-full rounded-lg max-h-70 mb-2"
                 src={product.cover}
@@ -70,6 +72,7 @@ const Home = () => {
                   <BsCartPlus size={20} color="#fff" />
                 </button>
               </div>
+              </Link>
             </section>
           ))}
         </div>
