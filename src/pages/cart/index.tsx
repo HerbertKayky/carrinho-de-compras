@@ -1,5 +1,4 @@
-import { useEffect, useState, useContext } from "react";
-import { api } from "../../services/api";
+import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { Link } from "react-router-dom";
 
@@ -12,17 +11,7 @@ export interface ProductProps {
 }
 
 const Cart = () => {
-  const { cart } = useContext(CartContext);
-  const [products, setProducts] = useState<ProductProps[]>([]);
-
-  useEffect(() => {
-    async function getProducts() {
-      const response = await api.get("/products");
-      setProducts(response.data);
-    }
-
-    getProducts();
-  }, []);
+  const { cart, total, addItemCart, removeItemCart } = useContext(CartContext);
 
   return (
     <div className="w-full max-w-7xl mx-auto">
@@ -55,11 +44,11 @@ const Cart = () => {
             })}
           </strong>
           <div className="flex items-center justify-center gap-3">
-            <button className="bg-slate-600 px-2 rounded text-white font-medium flex items-center justify-center">
+            <button onClick={() => removeItemCart(item)} className="bg-slate-600 px-2 rounded text-white font-medium flex items-center justify-center">
               -
             </button>
             {item.amount}
-            <button className="bg-slate-600 px-2 rounded text-white font-medium flex items-center justify-center">
+            <button onClick={() => addItemCart(item)} className="bg-slate-600 px-2 rounded text-white font-medium flex items-center justify-center">
               +
             </button>
           </div>
@@ -74,7 +63,7 @@ const Cart = () => {
         </section>
       ))}
 
-      {cart.length !== 0 && <p className="font-bold mt-4">Total: {}</p>}
+      {cart.length !== 0 && <p className="font-bold mt-4">Total: {total}</p>}
     </div>
   );
 };
