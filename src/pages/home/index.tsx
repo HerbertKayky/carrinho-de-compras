@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { BsCartPlus, BsSearch } from "react-icons/bs";
+import { BsCartPlus } from "react-icons/bs";
 import { api } from "../../services/api";
 import { CartContext } from "../../context/CartContext";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import Search from "../../components/search";
 
 export interface ProductProps {
   id: number;
@@ -16,7 +17,6 @@ export interface ProductProps {
 const Home = () => {
   const { addItemCart } = useContext(CartContext);
   const [products, setProducts] = useState<ProductProps[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResult, setSearchResult] = useState<ProductProps[]>([]);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Home = () => {
     });
   }
 
-  const handleSearch = () => {
+  const handleSearch = (searchTerm: string) => {
     const filteredProducts = products.filter((product) =>
       product.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -55,27 +55,7 @@ const Home = () => {
           Produtos em alta
         </h1>
 
-        <div className="relative ">
-          <BsSearch
-            className="absolute items-center start-3 top-3"
-            color="gray"
-          />
-
-          <input
-            className="block w-full p-2 ps-8 outline-none text-gray-900 rounded-lg border-2 border-zinc-300 font-medium"
-            type="search"
-            placeholder="Pesquisar"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="text-white absolute end-2 bottom-1.5 font-medium rounded-lg px-3 py-1 bg-blue-700 hover:bg-blue-800 "
-            onClick={handleSearch}
-          >
-            Search
-          </button>
-        </div>
+        <Search onSearch={handleSearch} />
 
         <div className="pt-4 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {searchResult.map((product) => (
