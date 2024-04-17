@@ -18,6 +18,7 @@ const Home = () => {
   const { addItemCart } = useContext(CartContext);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [searchResult, setSearchResult] = useState<ProductProps[]>([]);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     async function getProducts() {
@@ -48,55 +49,67 @@ const Home = () => {
     setSearchResult(filteredProducts);
   };
 
+  const toogleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div>
-      <main className="w-full max-w-7xl px-4 mx-auto">
-        <h1 className="font-bold text-2xl mb-4 mt-6 text-center">
-          Produtos em alta
-        </h1>
+    <div className={`${darkMode && "dark"}`}>
+      <div className="dark:bg-slate-900">
+        <main className="w-full max-w-7xl px-4 mx-auto">
+          <h1 className="dark:text-white font-bold text-2xl mb-4 pt-5 text-center">
+            Produtos em alta
+          </h1>
 
-        <Search onSearch={handleSearch} />
+          <Search onSearch={handleSearch} />
 
-        <div className="pt-4 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          {searchResult.map((product) => (
-            <section key={product.id} className="w-full">
-              <Link to={`/product/${product.id}`}>
-                <img
-                  className="2-full rounded-lg max-h-70 mb-2"
-                  src={product.cover}
-                  alt={product.title}
-                />
+          <div className="pt-4 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            {searchResult.map((product) => (
+              <section key={product.id} className="w-full">
+                <Link to={`/product/${product.id}`}>
+                  <img
+                    className="2-full rounded-lg max-h-70 mb-2"
+                    src={product.cover}
+                    alt={product.title}
+                  />
 
-                <p className="font-medium mt-1 mb-2 text-center">
-                  {product.title}
-                </p>
-              </Link>
-              <div className="flex gap-3 items-center justify-center">
-                <strong className="text-zinc-700/90">
-                  {product.price.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </strong>
-                <button
-                  onClick={() => handleAddCartItem(product)}
-                  className="bg-zinc-900 p-1 rounded"
-                >
-                  <BsCartPlus size={20} color="#fff" />
-                </button>
-              </div>
-            </section>
-          ))}
-        </div>
-        <div className="flex justify-center pt-5">
-          {searchResult.length === 0 && (
-            <p className="font-medium text-xl text-center text-gray-900">
-              Nenhum item encontrado. <br></br>
-              Tente pesquisar usando palavras chave
-            </p>
-          )}
-        </div>
-      </main>
+                  <p className="dark:text-white font-medium mt-1 mb-2 text-center">
+                    {product.title}
+                  </p>
+                </Link>
+                <div className="flex gap-3 items-center justify-center">
+                  <strong className="dark:text-gray-100 text-zinc-700/90">
+                    {product.price.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </strong>
+                  <button
+                    onClick={() => handleAddCartItem(product)}
+                    className="dark:bg-gray-700 bg-zinc-900 p-1 rounded"
+                  >
+                    <BsCartPlus size={20} color="#fff" />
+                  </button>
+                </div>
+              </section>
+            ))}
+            <button
+              onClick={toogleDarkMode}
+              className="absolute w-10 h-10 bottom-16 right-16 bg-neutral-900 dark:bg-white rounded-full text-white dark:text-black font-semibold"
+            >
+              {darkMode ? "LGH" : "DRK"}
+            </button>
+          </div>
+          <div className="flex justify-center pt-5">
+            {searchResult.length === 0 && (
+              <p className="font-medium text-xl text-center text-gray-900">
+                Nenhum item encontrado. <br></br>
+                Tente pesquisar usando palavras chave
+              </p>
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 };
