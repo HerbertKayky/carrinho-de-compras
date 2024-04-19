@@ -18,7 +18,16 @@ const Home = () => {
   const { addItemCart } = useContext(CartContext);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [searchResult, setSearchResult] = useState<ProductProps[]>([]);
-  const [darkMode, setDarkMode] = useState(false);
+
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    // Retorna o valor do localStorage se estiver definido, caso contrário, retorna false
+    return savedMode !== null ? JSON.parse(savedMode) : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   useEffect(() => {
     async function getProducts() {
